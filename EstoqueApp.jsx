@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from 'recharts';
 
@@ -38,12 +39,9 @@ export default function EstoqueApp() {
   const handleEntrada = async () => {
     await fetch("https://controle-estoque-backend.onrender.com/entrada", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formEntrada)
     });
-
     setEntrada([...entrada, formEntrada]);
     setFormEntrada({ produto: "", quantidade: "", valor: "", fornecedor: "", data: "", observacao: "" });
   };
@@ -51,12 +49,9 @@ export default function EstoqueApp() {
   const handleSaida = async () => {
     await fetch("https://controle-estoque-backend.onrender.com/saida", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formSaida)
     });
-
     setSaida([...saida, formSaida]);
     setFormSaida({ produto: "", quantidade: "", destino: "", responsavel: "", data: "" });
   };
@@ -67,15 +62,12 @@ export default function EstoqueApp() {
       acc[item.produto] = (acc[item.produto] || 0) + qtd;
       return acc;
     }, {});
-
     const totaisSaida = saida.reduce((acc, item) => {
       const qtd = parseFloat(item.quantidade) || 0;
       acc[item.produto] = (acc[item.produto] || 0) + qtd;
       return acc;
     }, {});
-
     const produtos = new Set([...Object.keys(totaisEntrada), ...Object.keys(totaisSaida)]);
-
     return Array.from(produtos).map(produto => ({
       produto,
       quantidade: (totaisEntrada[produto] || 0) - (totaisSaida[produto] || 0),
@@ -103,10 +95,10 @@ export default function EstoqueApp() {
   return (
     <div className="p-4 max-w-3xl mx-auto">
       <div className="flex space-x-4 mb-4">
-        <button onClick={() => setAba("entrada")} className={`px-4 py-2 rounded ${aba === "entrada" ? "bg-blue-500 text-white" : "bg-gray-200"}`}>Entrada</button>
-        <button onClick={() => setAba("saida")} className={`px-4 py-2 rounded ${aba === "saida" ? "bg-blue-500 text-white" : "bg-gray-200"}`}>Saída</button>
-        <button onClick={() => setAba("resumo")} className={`px-4 py-2 rounded ${aba === "resumo" ? "bg-blue-500 text-white" : "bg-gray-200"}`}>Resumo</button>
-        <button onClick={() => setAba("painel")} className={`px-4 py-2 rounded ${aba === "painel" ? "bg-blue-500 text-white" : "bg-gray-200"}`}>Painel</button>
+        <button onClick={() => setAba("entrada")} className={\`px-4 py-2 rounded \${aba === "entrada" ? "bg-blue-500 text-white" : "bg-gray-200"}\`}>Entrada</button>
+        <button onClick={() => setAba("saida")} className={\`px-4 py-2 rounded \${aba === "saida" ? "bg-blue-500 text-white" : "bg-gray-200"}\`}>Saída</button>
+        <button onClick={() => setAba("resumo")} className={\`px-4 py-2 rounded \${aba === "resumo" ? "bg-blue-500 text-white" : "bg-gray-200"}\`}>Resumo</button>
+        <button onClick={() => setAba("painel")} className={\`px-4 py-2 rounded \${aba === "painel" ? "bg-blue-500 text-white" : "bg-gray-200"}\`}>Painel</button>
       </div>
 
       {aba === "entrada" && (
@@ -119,7 +111,7 @@ export default function EstoqueApp() {
           <input placeholder="Quantidade" value={formEntrada.quantidade} onChange={e => setFormEntrada({ ...formEntrada, quantidade: e.target.value })} className="w-full p-2 border rounded" />
           <input placeholder="Valor Total Pago" value={formEntrada.valor} onChange={e => setFormEntrada({ ...formEntrada, valor: e.target.value })} className="w-full p-2 border rounded" />
           <input placeholder="Fornecedor" value={formEntrada.fornecedor} onChange={e => setFormEntrada({ ...formEntrada, fornecedor: e.target.value })} className="w-full p-2 border rounded" />
-          <input placeholder="Data" type="date" value={formEntrada.data} onChange={e => setFormEntrada({ ...formEntrada, data: e.target.value })} className="w-full p-2 border rounded" />
+          <input type="date" value={formEntrada.data} onChange={e => setFormEntrada({ ...formEntrada, data: e.target.value })} className="w-full p-2 border rounded" />
           <textarea placeholder="Observação" value={formEntrada.observacao} onChange={e => setFormEntrada({ ...formEntrada, observacao: e.target.value })} className="w-full p-2 border rounded" />
           <button onClick={handleEntrada} className="bg-green-500 text-white px-4 py-2 rounded">Salvar Entrada</button>
         </div>
@@ -132,7 +124,7 @@ export default function EstoqueApp() {
           <input placeholder="Quantidade" value={formSaida.quantidade} onChange={e => setFormSaida({ ...formSaida, quantidade: e.target.value })} className="w-full p-2 border rounded" />
           <input placeholder="Destino" value={formSaida.destino} onChange={e => setFormSaida({ ...formSaida, destino: e.target.value })} className="w-full p-2 border rounded" />
           <input placeholder="Responsável" value={formSaida.responsavel} onChange={e => setFormSaida({ ...formSaida, responsavel: e.target.value })} className="w-full p-2 border rounded" />
-          <input placeholder="Data" type="date" value={formSaida.data} onChange={e => setFormSaida({ ...formSaida, data: e.target.value })} className="w-full p-2 border rounded" />
+          <input type="date" value={formSaida.data} onChange={e => setFormSaida({ ...formSaida, data: e.target.value })} className="w-full p-2 border rounded" />
           <button onClick={handleSaida} className="bg-red-500 text-white px-4 py-2 rounded">Salvar Saída</button>
         </div>
       )}
